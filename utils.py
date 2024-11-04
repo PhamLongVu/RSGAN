@@ -12,7 +12,7 @@ from PIL import Image
 
 def match_samples_path(data_dir):
     sub_dirs = os.listdir(data_dir)
-    shadow_images_dir = '/mnt/sda2/intern/RIS-GAN/data_customize/train'
+    shadow_images_dir = '/kaggle/input/remove-stamp/data_customize/train'
     shadow_removal_images_dir = ''
     for sub_dir in sub_dirs:
         print(sub_dir)
