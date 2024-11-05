@@ -46,9 +46,9 @@ class Trainer(object):
         self.optimizer_finial = torch.optim.SGD(self.generator_finial.parameters(), lr=self.lr, momentum=0.9)
         self.optimizer_discriminator = torch.optim.Adam(self.discriminator.parameters(), lr=self.lr * 0.1, betas=(0.5, 0.999))
 
-        self.train_ds = DataLoader(IstdDataset('/mnt/sda2/intern/RIS-GAN/data_customize/train'), batch_size=batch_size, shuffle=True,
+        self.train_ds = DataLoader(IstdDataset('/kaggle/input/remove-stamp/data_customize/train'), batch_size=batch_size, shuffle=True,
                                    num_workers=num_workers, pin_memory=True, drop_last=True)
-        self.test_ds = DataLoader(IstdDataset('/mnt/sda2/intern/RIS-GAN/data_customize/test'), batch_size=batch_size, shuffle=False,
+        self.test_ds = DataLoader(IstdDataset('/kaggle/input/remove-stamp/data_customize/test'), batch_size=batch_size, shuffle=False,
                                   num_workers=num_workers, pin_memory=True, drop_last=True)
 
         self.one =  torch.tensor(1, dtype=torch.float)
