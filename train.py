@@ -5,7 +5,6 @@
     Date  : 2020.10.20
 """
 import os
-
 import torchvision
 from torch.utils.data import DataLoader
 
@@ -15,7 +14,7 @@ import torch.nn.functional as F
 from vgg import vgg16
 from net import Generator, Discriminator
 from dataset import IstdDataset
-
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
 L_1 = 10
 L_2 = 100
@@ -27,7 +26,7 @@ B_2 = 0.2
 
 class Trainer(object):
 
-    def __init__(self, batch_size=8, num_workers=4, device='cuda'):
+    def __init__(self, batch_size=4, num_workers=4, device='cuda'):
         self.batch_size = batch_size
         self.device = device
         self.e = 0
@@ -47,12 +46,12 @@ class Trainer(object):
         self.optimizer_finial = torch.optim.SGD(self.generator_finial.parameters(), lr=self.lr, momentum=0.9)
         self.optimizer_discriminator = torch.optim.Adam(self.discriminator.parameters(), lr=self.lr * 0.1, betas=(0.5, 0.999))
 
-        self.train_ds = DataLoader(IstdDataset('/kaggle/input/remove-stamp/data_customize/train'), batch_size=batch_size, shuffle=True,
+        self.train_ds = DataLoader(IstdDataset('/mnt/sda2/intern/RIS-GAN/data_customize/train'), batch_size=batch_size, shuffle=True,
                                    num_workers=num_workers, pin_memory=True, drop_last=True)
-        self.test_ds = DataLoader(IstdDataset('/kaggle/input/remove-stamp/data_customize/test'), batch_size=batch_size, shuffle=False,
+        self.test_ds = DataLoader(IstdDataset('/mnt/sda2/intern/RIS-GAN/data_customize/test'), batch_size=batch_size, shuffle=False,
                                   num_workers=num_workers, pin_memory=True, drop_last=True)
 
-        self.one = torch.FloatTensor([1]).to(device)
+        self.one =  torch.tensor(1, dtype=torch.float)
         self.mone = self.one * -1
 
     # def reinit_d(self):
@@ -113,8 +112,8 @@ class Trainer(object):
         gan_fake_illum = self.discriminator(fake_illum).mean()
         gan_fake_srd = self.discriminator(fake_srd).mean()
 
-        vgg_srd_input = F.upsample(srd, (228, 228), mode='nearest')
-        vgg_fake_srd_input = F.upsample(fake_srd, (228, 228), mode='nearest')
+        vgg_srd_input = F.interpolate(srd, (228, 228), mode='nearest')
+        vgg_fake_srd_input = F.interpolate(fake_srd, (228, 228), mode='nearest')
         vgg_srd = self.vgg(vgg_srd_input)
         vgg_fake_srd = self.vgg(vgg_fake_srd_input)
 
@@ -213,7 +212,7 @@ class Trainer(object):
 
 if __name__ == '__main__':
     trainer = Trainer()
-    # trainer.load('param_new/checkpoint_450.pkl')
+    trainer.load('/mnt/sda2/intern/RIS-GAN/param_new/checkpoint_0.pkl')
     trainer.train()
 
 
