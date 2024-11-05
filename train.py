@@ -26,7 +26,7 @@ B_2 = 0.2
 
 class Trainer(object):
 
-    def __init__(self, batch_size=4, num_workers=4, device='cuda'):
+    def __init__(self, batch_size=32, num_workers=16, device='cuda'):
         self.batch_size = batch_size
         self.device = device
         self.e = 0
