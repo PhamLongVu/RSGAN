@@ -212,7 +212,7 @@ class Trainer(object):
 
 if __name__ == '__main__':
     trainer = Trainer()
-    trainer.load('/mnt/sda2/intern/RIS-GAN/param_new/checkpoint_0.pkl')
+    # trainer.load('/mnt/sda2/intern/RIS-GAN/param_new/checkpoint_0.pkl')
     trainer.train()
 
 
